@@ -1,11 +1,32 @@
-<div style="padding: 20px; border: 1px solid #ccc; border-radius: 10px; max-width: 400px; margin: auto; background: #fff;">
-  <h3>คำนวณปริมาณน้ำในสระ</h3>
-  <label>ความกว้าง (เมตร):</label><br>
-  <input type="number" id="inputW" style="width: 100%; margin: 5px 0 10px 0;"><br>
-  <label>ความยาว (เมตร):</label><br>
-  <input type="number" id="inputL" style="width: 100%; margin: 5px 0 10px 0;"><br>
-  <label>ความลึก (เมตร):</label><br>
-  <input type="number" id="inputD" style="width: 100%; margin: 5px 0 10px 0;"><br>
+<div style="font-family: Arial, sans-serif; padding: 20px; border: 1px solid #ddd; border-radius: 12px; max-width: 400px; margin: auto; background-color: #f9f9f9; box-shadow: 0 4px 8px rgba(0,0,0,0.1);">
+  <h2 style="color: #0056b3; margin-top: 0; text-align: center;">เครื่องมือคำนวณน้ำ</h2>
   
-  <button type="button" onclick="alert('ปริมาณน้ำคือ: ' + (document.getElementById('inputW').value * document.getElementById('inputL').value * document.getElementById('inputD').value * 1000).toLocaleString() + ' ลิตร');" style="width: 100%; padding: 10px; background-color: #28a745; color: white; border: none; border-radius: 5px;">คำนวณและแสดงผล</button>
+  <label>ความกว้าง (ม.):</label>
+  <input type="number" id="width" style="width: 100%; padding: 8px; margin: 5px 0 15px 0; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box;">
+  
+  <label>ความยาว (ม.):</label>
+  <input type="number" id="length" style="width: 100%; padding: 8px; margin: 5px 0 15px 0; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box;">
+  
+  <label>ความลึก (ม.):</label>
+  <input type="number" id="depth" style="width: 100%; padding: 8px; margin: 5px 0 15px 0; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box;">
+  
+  <button onclick="calculate()" style="width: 100%; padding: 12px; background-color: #007bff; color: white; border: none; border-radius: 4px; cursor: pointer; font-size: 16px;">คำนวณปริมาณน้ำ</button>
+  
+  <div id="result" style="margin-top: 20px; text-align: center; font-size: 18px; font-weight: bold; color: #333; min-height: 25px;"></div>
 </div>
+
+<script>
+function calculate() {
+  const w = parseFloat(document.getElementById('width').value);
+  const l = parseFloat(document.getElementById('length').value);
+  const d = parseFloat(document.getElementById('depth').value);
+  const res = document.getElementById('result');
+  
+  if(w > 0 && l > 0 && d > 0) {
+    const total = (w * l * d) * 1000;
+    res.innerText = "ปริมาณน้ำ: " + total.toLocaleString() + " ลิตร";
+  } else {
+    res.innerText = "กรุณากรอกตัวเลขให้ถูกต้อง";
+  }
+}
+</script>
