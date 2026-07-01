@@ -1,93 +1,106 @@
 <style>
-  /* ดึงฟอนต์ Prompt (ไม่มีหัว) จาก Google Fonts */
   @import url('https://fonts.googleapis.com/css2?family=Prompt:wght@400;500;600;700&display=swap');
 
-  /* กรอบหลัก แบ่งซ้ายขวา */
+  /* กรอบหลัก */
   .pool-calc-wrapper {
-    font-family: 'Prompt', sans-serif; /* เปลี่ยนมาใช้ฟอนต์ Prompt */
+    font-family: 'Prompt', sans-serif;
     max-width: 850px;
+    width: 100%;
     margin: 40px auto;
     background: #ffffff;
     border-radius: 16px;
     box-shadow: 0 10px 30px rgba(26, 60, 109, 0.1);
     border: 1px solid #e2e8f0;
     overflow: hidden;
+    
+    /* บังคับให้เป็น 2 คอลัมน์ตลอดเวลา */
     display: flex;
-    flex-wrap: wrap;
+    flex-direction: row; 
+    flex-wrap: nowrap; 
   }
 
   /* ฝั่งซ้าย (กรอกข้อมูล) */
   .calc-left {
-    flex: 1 1 350px;
-    padding: 35px;
+    flex: 1; /* แบ่งพื้นที่ 50% */
+    width: 50%;
+    padding: 30px;
     background-color: #ffffff;
+    box-sizing: border-box;
   }
 
   /* ฝั่งขวา (แสดงผล) */
   .calc-right {
-    flex: 1 1 350px;
+    flex: 1; /* แบ่งพื้นที่ 50% */
+    width: 50%;
     background: #f8fafc;
-    padding: 35px;
-    border-left: 1px solid #e2e8f0;
+    padding: 30px;
+    border-left: 1px solid #e2e8f0; /* เส้นคั่นกลางเสมอ */
     display: flex;
     flex-direction: column;
     justify-content: center;
-  }
-
-  /* Responsive สำหรับมือถือ */
-  @media (max-width: 768px) {
-    .calc-right {
-      border-left: none;
-      border-top: 1px solid #e2e8f0;
-    }
+    box-sizing: border-box;
   }
 
   /* การตกแต่งตัวอักษรและช่องกรอก */
   .calc-title {
     color: #1a3c6d;
-    font-size: 22px;
+    font-size: 20px;
     font-weight: 600;
     margin-top: 0;
-    margin-bottom: 25px;
+    margin-bottom: 20px;
     text-align: center;
   }
 
-  .input-group { margin-bottom: 18px; }
+  .input-group { margin-bottom: 15px; }
   .input-group label {
-    display: block; font-size: 15px; font-weight: 500; color: #4a5568; margin-bottom: 8px;
+    display: block; font-size: 14px; font-weight: 500; color: #4a5568; margin-bottom: 6px;
   }
   .input-group input {
-    width: 100%; padding: 12px 15px; border: 2px solid #e2e8f0; border-radius: 8px; 
-    font-size: 16px; box-sizing: border-box; transition: border-color 0.3s;
-    font-family: 'Prompt', sans-serif; /* ให้ช่องกรอกเป็นฟอนต์เดียวกัน */
+    width: 100%; padding: 10px 12px; border: 2px solid #e2e8f0; border-radius: 8px; 
+    font-size: 15px; box-sizing: border-box; transition: border-color 0.3s;
+    font-family: 'Prompt', sans-serif;
   }
   .input-group input:focus { border-color: #1a3c6d; outline: none; }
 
   .calc-btn {
-    width: 100%; padding: 15px; background: #1a3c6d; color: #fff; font-size: 16px; 
+    width: 100%; padding: 12px; background: #1a3c6d; color: #fff; font-size: 15px; 
     font-weight: 600; border: none; border-radius: 8px; cursor: pointer; 
-    transition: background 0.3s; margin-top: 15px;
-    font-family: 'Prompt', sans-serif; /* ให้ปุ่มเป็นฟอนต์เดียวกัน */
+    transition: background 0.3s; margin-top: 10px;
+    font-family: 'Prompt', sans-serif;
   }
   .calc-btn:hover { background: #122b4d; }
 
   /* กล่องแสดงผลลัพธ์ */
   .result-box {
-    background: #fff; border: 1px solid #e2e8f0; border-radius: 12px; 
-    padding: 20px; text-align: center; margin-bottom: 15px; 
-    box-shadow: 0 4px 6px rgba(0,0,0,0.02);
+    background: #fff; border: 1px solid #e2e8f0; border-radius: 10px; 
+    padding: 15px; text-align: center; margin-bottom: 15px; 
+    box-shadow: 0 2px 4px rgba(0,0,0,0.02);
   }
-  .result-label { font-size: 14px; color: #718096; margin-bottom: 8px; }
-  .result-value { font-size: 24px; font-weight: 700; color: #1a3c6d; }
-  .result-highlight { color: #0984e3; font-size: 28px; }
+  .result-label { font-size: 13px; color: #718096; margin-bottom: 5px; }
+  .result-value { font-size: 20px; font-weight: 700; color: #1a3c6d; }
+  .result-highlight { color: #0984e3; font-size: 24px; }
 
-  /* ปรับแต่งส่วนหมายเหตุ */
   .note { 
-    font-size: 14px; 
+    font-size: 12px; 
     font-weight: 500; 
     color: #2d3748; 
     text-align: center; 
-    margin-top: 15px; 
+    margin-top: 10px; 
+  }
+
+  /* ปรับแต่งพิเศษสำหรับหน้าจอมือถือ (ย่อส่วนประกอบให้พอดีกับการแบ่งครึ่งจอ) */
+  @media (max-width: 600px) {
+    .calc-left, .calc-right { padding: 15px; }
+    .calc-title { font-size: 15px; margin-bottom: 15px; }
+    .input-group label { font-size: 12px; }
+    .input-group input { padding: 8px; font-size: 14px; }
+    .calc-btn { font-size: 13px; padding: 10px; }
+    .result-box { padding: 10px; }
+    .result-label { font-size: 11px; }
+    .result-value { font-size: 16px; }
+    .result-highlight { font-size: 18px; }
+    .note { font-size: 10px; }
+    #res-liters, #res-spoon { font-size: 12px !important; }
   }
 </style>
 
@@ -117,14 +130,14 @@
     <div class="result-box">
       <div class="result-label">ปริมาตรน้ำในสระของคุณคือ</div>
       <div class="result-value" id="res-volume">- คิว</div>
-      <div style="font-size: 15px; color: #718096; margin-top: 4px;" id="res-liters">(- ลิตร)</div>
+      <div style="font-size: 14px; color: #718096; margin-top: 2px;" id="res-liters">(- ลิตร)</div>
     </div>
 
     <!-- กล่องไฮไลท์สีฟ้าอ่อน สำหรับผลลัพธ์คลอรีน -->
     <div class="result-box" style="border-color: #bee3f8; background: #ebf8ff;">
       <div class="result-label" style="color: #2b6cb0;">ปริมาณคลอรีนที่ต้องใช้</div>
       <div class="result-value result-highlight" id="res-chlorine">- กรัม</div>
-      <div style="font-size: 16px; color: #2b6cb0; margin-top: 5px; font-weight: 500;" id="res-spoon">(- ช้อนชา)</div>
+      <div style="font-size: 14px; color: #2b6cb0; margin-top: 2px; font-weight: 500;" id="res-spoon">(- ช้อนชา)</div>
     </div>
     
     <div class="note">*อัตราส่วนอ้างอิง: คลอรีน 5 กรัม (1 ช้อนชา) ต่อ น้ำ 1 คิว</div>
