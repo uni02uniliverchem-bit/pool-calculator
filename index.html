@@ -1,90 +1,154 @@
 <style>
-  .calc-container {
-    font-family: 'Kanit', sans-serif; /* แนะนำให้ใช้ฟอนต์ไทยที่ดูทันสมัย */
-    padding: 25px;
-    border-radius: 20px;
-    max-width: 400px;
-    width: 90%;
-    margin: 20px auto;
-    background-color: #ffffff;
-    border: 1px solid #e0e8f0;
-    box-shadow: 0 15px 35px rgba(26, 60, 109, 0.1);
+  /* ดึงฟอนต์ Prompt (ไม่มีหัว) จาก Google Fonts */
+  @import url('https://fonts.googleapis.com/css2?family=Prompt:wght@400;500;600;700&display=swap');
+
+  /* กรอบหลัก แบ่งซ้ายขวา */
+  .pool-calc-wrapper {
+    font-family: 'Prompt', sans-serif; /* เปลี่ยนมาใช้ฟอนต์ Prompt */
+    max-width: 850px;
+    margin: 40px auto;
+    background: #ffffff;
+    border-radius: 16px;
+    box-shadow: 0 10px 30px rgba(26, 60, 109, 0.1);
+    border: 1px solid #e2e8f0;
+    overflow: hidden;
+    display: flex;
+    flex-wrap: wrap;
   }
-  
-  h2 { color: #1a3c6d; margin-top: 0; text-align: center; font-weight: 600; }
+
+  /* ฝั่งซ้าย (กรอกข้อมูล) */
+  .calc-left {
+    flex: 1 1 350px;
+    padding: 35px;
+    background-color: #ffffff;
+  }
+
+  /* ฝั่งขวา (แสดงผล) */
+  .calc-right {
+    flex: 1 1 350px;
+    background: #f8fafc;
+    padding: 35px;
+    border-left: 1px solid #e2e8f0;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+
+  /* Responsive สำหรับมือถือ */
+  @media (max-width: 768px) {
+    .calc-right {
+      border-left: none;
+      border-top: 1px solid #e2e8f0;
+    }
+  }
+
+  /* การตกแต่งตัวอักษรและช่องกรอก */
+  .calc-title {
+    color: #1a3c6d;
+    font-size: 22px;
+    font-weight: 600;
+    margin-top: 0;
+    margin-bottom: 25px;
+    text-align: center;
+  }
 
   .input-group { margin-bottom: 18px; }
-  label { font-weight: 500; color: #4a5568; display: block; margin-bottom: 8px; font-size: 14px; }
-  
-  input { 
-    width: 100%; 
-    padding: 14px; 
-    border: 2px solid #edf2f7; 
-    border-radius: 10px; 
-    box-sizing: border-box;
-    font-size: 16px;
-    transition: border-color 0.3s;
+  .input-group label {
+    display: block; font-size: 15px; font-weight: 500; color: #4a5568; margin-bottom: 8px;
   }
-  
-  input:focus { border-color: #1a3c6d; outline: none; }
-  
-  button { 
-    width: 100%; 
-    padding: 15px; 
-    background-color: #1a3c6d; 
-    color: white; 
-    border: none; 
-    border-radius: 10px; 
-    cursor: pointer; 
-    font-size: 16px; 
-    font-weight: 600;
-    transition: background 0.3s;
+  .input-group input {
+    width: 100%; padding: 12px 15px; border: 2px solid #e2e8f0; border-radius: 8px; 
+    font-size: 16px; box-sizing: border-box; transition: border-color 0.3s;
+    font-family: 'Prompt', sans-serif; /* ให้ช่องกรอกเป็นฟอนต์เดียวกัน */
   }
-  
-  button:hover { background-color: #2c5282; }
+  .input-group input:focus { border-color: #1a3c6d; outline: none; }
+
+  .calc-btn {
+    width: 100%; padding: 15px; background: #1a3c6d; color: #fff; font-size: 16px; 
+    font-weight: 600; border: none; border-radius: 8px; cursor: pointer; 
+    transition: background 0.3s; margin-top: 15px;
+    font-family: 'Prompt', sans-serif; /* ให้ปุ่มเป็นฟอนต์เดียวกัน */
+  }
+  .calc-btn:hover { background: #122b4d; }
+
+  /* กล่องแสดงผลลัพธ์ */
+  .result-box {
+    background: #fff; border: 1px solid #e2e8f0; border-radius: 12px; 
+    padding: 20px; text-align: center; margin-bottom: 15px; 
+    box-shadow: 0 4px 6px rgba(0,0,0,0.02);
+  }
+  .result-label { font-size: 14px; color: #718096; margin-bottom: 8px; }
+  .result-value { font-size: 24px; font-weight: 700; color: #1a3c6d; }
+  .result-highlight { color: #0984e3; font-size: 28px; }
+
+  /* ปรับแต่งส่วนหมายเหตุ */
+  .note { 
+    font-size: 14px; 
+    font-weight: 500; 
+    color: #2d3748; 
+    text-align: center; 
+    margin-top: 15px; 
+  }
 </style>
 
-<div class="calc-container">
-  <h2>คำนวณปริมาณน้ำในสระ</h2>
-  
-  <div class="input-group">
-    <label>ความกว้าง (เมตร)</label>
-    <input type="number" id="width" placeholder="0.00">
+<div class="pool-calc-wrapper">
+  <!-- ฝั่งซ้าย: คำนวณปริมาตรน้ำ -->
+  <div class="calc-left">
+    <h3 class="calc-title">คำนวณปริมาตรน้ำในสระ</h3>
+    <div class="input-group">
+      <label>ความกว้าง (เมตร)</label>
+      <input type="number" id="pool-w" placeholder="0.00">
+    </div>
+    <div class="input-group">
+      <label>ความยาว (เมตร)</label>
+      <input type="number" id="pool-l" placeholder="0.00">
+    </div>
+    <div class="input-group">
+      <label>ความลึกเฉลี่ย (เมตร)</label>
+      <input type="number" id="pool-d" placeholder="0.00">
+    </div>
+    <button class="calc-btn" onclick="calculatePool()">คำนวณปริมาณที่ต้องใช้</button>
   </div>
-  <div class="input-group">
-    <label>ความยาว (เมตร)</label>
-    <input type="number" id="length" placeholder="0.00">
+
+  <!-- ฝั่งขวา: ปริมาณที่แนะนำ -->
+  <div class="calc-right">
+    <h3 class="calc-title">ปริมาณที่แนะนำ</h3>
+    
+    <div class="result-box">
+      <div class="result-label">ปริมาตรน้ำในสระของคุณคือ</div>
+      <div class="result-value" id="res-volume">- คิว</div>
+      <div style="font-size: 15px; color: #718096; margin-top: 4px;" id="res-liters">(- ลิตร)</div>
+    </div>
+
+    <!-- กล่องไฮไลท์สีฟ้าอ่อน สำหรับผลลัพธ์คลอรีน -->
+    <div class="result-box" style="border-color: #bee3f8; background: #ebf8ff;">
+      <div class="result-label" style="color: #2b6cb0;">ปริมาณคลอรีนที่ต้องใช้</div>
+      <div class="result-value result-highlight" id="res-chlorine">- กรัม</div>
+      <div style="font-size: 16px; color: #2b6cb0; margin-top: 5px; font-weight: 500;" id="res-spoon">(- ช้อนชา)</div>
+    </div>
+    
+    <div class="note">*อัตราส่วนอ้างอิง: คลอรีน 5 กรัม (1 ช้อนชา) ต่อ น้ำ 1 คิว</div>
   </div>
-  <div class="input-group">
-    <label>ความลึกเฉลี่ย (เมตร)</label>
-    <input type="number" id="depth" placeholder="0.00">
-  </div>
-  
-  <button onclick="calculate()">คำนวณปริมาณน้ำ</button>
-  
-  <div id="result" style="margin-top: 25px; padding: 20px; border-radius: 12px; background-color: #f7fafc; text-align: center; display: none;"></div>
 </div>
 
 <script>
-function calculate() {
-  const w = parseFloat(document.getElementById('width').value);
-  const l = parseFloat(document.getElementById('length').value);
-  const d = parseFloat(document.getElementById('depth').value);
-  const res = document.getElementById('result');
-  
-  if(w > 0 && l > 0 && d > 0) {
-    const m3 = w * l * d;
-    const liters = m3 * 1000;
-    res.style.display = "block";
-    res.style.border = "1px solid #1a3c6d";
-    res.innerHTML = `<div style="font-size: 14px; color: #718096; margin-bottom:5px;">ปริมาตรสระของคุณคือ</div>
-                     <div style="font-size: 26px; color: #1a3c6d; font-weight: 700;">${m3.toLocaleString()} คิว</div>
-                     <div style="font-size: 18px; color: #2d3748; margin-top:5px;">${liters.toLocaleString()} ลิตร</div>`;
-  } else {
-    res.style.display = "block";
-    res.style.border = "1px solid #feb2b2";
-    res.style.backgroundColor = "#fff5f5";
-    res.innerText = "กรุณากรอกตัวเลขให้ครบถ้วนครับ";
+  function calculatePool() {
+    const w = parseFloat(document.getElementById('pool-w').value);
+    const l = parseFloat(document.getElementById('pool-l').value);
+    const d = parseFloat(document.getElementById('pool-d').value);
+    
+    if(w > 0 && l > 0 && d > 0) {
+      const volume = w * l * d;
+      const liters = volume * 1000;     
+      const chlorineGrams = volume * 5; 
+      const chlorineSpoons = volume;    
+      
+      document.getElementById('res-volume').innerText = volume.toLocaleString(undefined, {maximumFractionDigits: 2}) + " คิว";
+      document.getElementById('res-liters').innerText = "(" + liters.toLocaleString(undefined, {maximumFractionDigits: 2}) + " ลิตร)";
+      document.getElementById('res-chlorine').innerText = chlorineGrams.toLocaleString(undefined, {maximumFractionDigits: 2}) + " กรัม";
+      document.getElementById('res-spoon').innerText = "(หรือประมาณ " + chlorineSpoons.toLocaleString(undefined, {maximumFractionDigits: 2}) + " ช้อนชา)";
+    } else {
+      alert("กรุณากรอกตัวเลขความกว้าง ความยาว และความลึกให้ถูกต้องครับ");
+    }
   }
-}
 </script>
