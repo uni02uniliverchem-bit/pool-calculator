@@ -1,0 +1,11 @@
+<div style="padding: 20px; border: 1px solid #ccc; border-radius: 10px; max-width: 400px; margin: auto; background: #fff;">
+  <h3>คำนวณปริมาณน้ำในสระ</h3>
+  <label>ความกว้าง (เมตร):</label><br>
+  <input type="number" id="inputW" style="width: 100%; margin: 5px 0 10px 0;"><br>
+  <label>ความยาว (เมตร):</label><br>
+  <input type="number" id="inputL" style="width: 100%; margin: 5px 0 10px 0;"><br>
+  <label>ความลึก (เมตร):</label><br>
+  <input type="number" id="inputD" style="width: 100%; margin: 5px 0 10px 0;"><br>
+  
+  <button type="button" onclick="alert('ปริมาณน้ำคือ: ' + (document.getElementById('inputW').value * document.getElementById('inputL').value * document.getElementById('inputD').value * 1000).toLocaleString() + ' ลิตร');" style="width: 100%; padding: 10px; background-color: #28a745; color: white; border: none; border-radius: 5px;">คำนวณและแสดงผล</button>
+</div>
