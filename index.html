@@ -4,14 +4,12 @@
   /* กรอบหลัก */
   .pool-calc-wrapper {
     font-family: 'Prompt', sans-serif;
-    max-width: 850px;
-    width: 100%;
-    margin: 40px auto;
+    width: 100%; /* ให้พอดีกับกล่องของ MakeWebEasy */
+    margin: 0; /* เอา margin ออกเพื่อป้องกัน Scrollbar แนวตั้ง */
     background: #ffffff;
-    border-radius: 16px;
-    box-shadow: 0 10px 30px rgba(26, 60, 109, 0.1);
+    border-radius: 12px;
     border: 1px solid #e2e8f0;
-    overflow: hidden;
+    box-sizing: border-box; /* สำคัญมาก ป้องกันกล่องล้น */
     
     /* บังคับให้เป็น 2 คอลัมน์ตลอดเวลา */
     display: flex;
@@ -21,39 +19,41 @@
 
   /* ฝั่งซ้าย (กรอกข้อมูล) */
   .calc-left {
-    flex: 1; /* แบ่งพื้นที่ 50% */
+    flex: 1; 
     width: 50%;
-    padding: 30px;
+    padding: 25px;
     background-color: #ffffff;
     box-sizing: border-box;
+    border-radius: 12px 0 0 12px;
   }
 
   /* ฝั่งขวา (แสดงผล) */
   .calc-right {
-    flex: 1; /* แบ่งพื้นที่ 50% */
+    flex: 1; 
     width: 50%;
     background: #f8fafc;
-    padding: 30px;
-    border-left: 1px solid #e2e8f0; /* เส้นคั่นกลางเสมอ */
+    padding: 25px;
+    border-left: 1px solid #e2e8f0;
     display: flex;
     flex-direction: column;
     justify-content: center;
     box-sizing: border-box;
+    border-radius: 0 12px 12px 0;
   }
 
   /* การตกแต่งตัวอักษรและช่องกรอก */
   .calc-title {
     color: #1a3c6d;
-    font-size: 20px;
+    font-size: 18px;
     font-weight: 600;
     margin-top: 0;
     margin-bottom: 20px;
     text-align: center;
   }
 
-  .input-group { margin-bottom: 15px; }
+  .input-group { margin-bottom: 12px; }
   .input-group label {
-    display: block; font-size: 14px; font-weight: 500; color: #4a5568; margin-bottom: 6px;
+    display: block; font-size: 14px; font-weight: 500; color: #4a5568; margin-bottom: 5px;
   }
   .input-group input {
     width: 100%; padding: 10px 12px; border: 2px solid #e2e8f0; border-radius: 8px; 
@@ -73,8 +73,7 @@
   /* กล่องแสดงผลลัพธ์ */
   .result-box {
     background: #fff; border: 1px solid #e2e8f0; border-radius: 10px; 
-    padding: 15px; text-align: center; margin-bottom: 15px; 
-    box-shadow: 0 2px 4px rgba(0,0,0,0.02);
+    padding: 15px; text-align: center; margin-bottom: 12px; 
   }
   .result-label { font-size: 13px; color: #718096; margin-bottom: 5px; }
   .result-value { font-size: 20px; font-weight: 700; color: #1a3c6d; }
@@ -88,10 +87,10 @@
     margin-top: 10px; 
   }
 
-  /* ปรับแต่งพิเศษสำหรับหน้าจอมือถือ (ย่อส่วนประกอบให้พอดีกับการแบ่งครึ่งจอ) */
+  /* ปรับแต่งสำหรับหน้าจอมือถือ */
   @media (max-width: 600px) {
-    .calc-left, .calc-right { padding: 15px; }
-    .calc-title { font-size: 15px; margin-bottom: 15px; }
+    .calc-left, .calc-right { padding: 12px; }
+    .calc-title { font-size: 14px; margin-bottom: 12px; }
     .input-group label { font-size: 12px; }
     .input-group input { padding: 8px; font-size: 14px; }
     .calc-btn { font-size: 13px; padding: 10px; }
@@ -100,12 +99,10 @@
     .result-value { font-size: 16px; }
     .result-highlight { font-size: 18px; }
     .note { font-size: 10px; }
-    #res-liters, #res-spoon { font-size: 12px !important; }
   }
 </style>
 
 <div class="pool-calc-wrapper">
-  <!-- ฝั่งซ้าย: คำนวณปริมาตรน้ำ -->
   <div class="calc-left">
     <h3 class="calc-title">คำนวณปริมาตรน้ำในสระ</h3>
     <div class="input-group">
@@ -123,7 +120,6 @@
     <button class="calc-btn" onclick="calculatePool()">คำนวณปริมาณที่ต้องใช้</button>
   </div>
 
-  <!-- ฝั่งขวา: ปริมาณที่แนะนำ -->
   <div class="calc-right">
     <h3 class="calc-title">ปริมาณที่แนะนำ</h3>
     
@@ -133,7 +129,6 @@
       <div style="font-size: 14px; color: #718096; margin-top: 2px;" id="res-liters">(- ลิตร)</div>
     </div>
 
-    <!-- กล่องไฮไลท์สีฟ้าอ่อน สำหรับผลลัพธ์คลอรีน -->
     <div class="result-box" style="border-color: #bee3f8; background: #ebf8ff;">
       <div class="result-label" style="color: #2b6cb0;">ปริมาณคลอรีนที่ต้องใช้</div>
       <div class="result-value result-highlight" id="res-chlorine">- กรัม</div>
