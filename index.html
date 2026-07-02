@@ -4,14 +4,13 @@
   /* กรอบหลัก */
   .pool-calc-wrapper {
     font-family: 'Prompt', sans-serif;
-    width: 100%; /* ให้พอดีกับกล่องของ MakeWebEasy */
-    margin: 0; /* เอา margin ออกเพื่อป้องกัน Scrollbar แนวตั้ง */
+    width: 100%;
+    margin: 0;
     background: #ffffff;
     border-radius: 12px;
     border: 1px solid #e2e8f0;
-    box-sizing: border-box; /* สำคัญมาก ป้องกันกล่องล้น */
+    box-sizing: border-box; 
     
-    /* บังคับให้เป็น 2 คอลัมน์ตลอดเวลา */
     display: flex;
     flex-direction: row; 
     flex-wrap: nowrap; 
@@ -55,12 +54,15 @@
   .input-group label {
     display: block; font-size: 14px; font-weight: 500; color: #4a5568; margin-bottom: 5px;
   }
-  .input-group input {
+  
+  .input-group input, .input-group select {
     width: 100%; padding: 10px 12px; border: 2px solid #e2e8f0; border-radius: 8px; 
     font-size: 15px; box-sizing: border-box; transition: border-color 0.3s;
     font-family: 'Prompt', sans-serif;
+    background-color: #ffffff;
+    color: #2d3748;
   }
-  .input-group input:focus { border-color: #1a3c6d; outline: none; }
+  .input-group input:focus, .input-group select:focus { border-color: #1a3c6d; outline: none; }
 
   .calc-btn {
     width: 100%; padding: 12px; background: #1a3c6d; color: #fff; font-size: 15px; 
@@ -75,7 +77,7 @@
     background: #fff; border: 1px solid #e2e8f0; border-radius: 10px; 
     padding: 15px; text-align: center; margin-bottom: 12px; 
   }
-  .result-label { font-size: 13px; color: #718096; margin-bottom: 5px; }
+  .result-label { font-size: 13px; color: #718096; margin-bottom: 5px; font-weight: 500; }
   .result-value { font-size: 20px; font-weight: 700; color: #1a3c6d; }
   .result-highlight { color: #0984e3; font-size: 24px; }
 
@@ -85,6 +87,7 @@
     color: #2d3748; 
     text-align: center; 
     margin-top: 10px; 
+    line-height: 1.4;
   }
 
   /* ปรับแต่งสำหรับหน้าจอมือถือ */
@@ -92,7 +95,7 @@
     .calc-left, .calc-right { padding: 12px; }
     .calc-title { font-size: 14px; margin-bottom: 12px; }
     .input-group label { font-size: 12px; }
-    .input-group input { padding: 8px; font-size: 14px; }
+    .input-group input, .input-group select { padding: 8px; font-size: 13px; }
     .calc-btn { font-size: 13px; padding: 10px; }
     .result-box { padding: 10px; }
     .result-label { font-size: 11px; }
@@ -105,19 +108,34 @@
 <div class="pool-calc-wrapper">
   <div class="calc-left">
     <h3 class="calc-title">คำนวณปริมาตรน้ำในสระ</h3>
+    
+    <div class="input-group">
+      <label>เลือกสินค้าที่ต้องการใช้งาน</label>
+      <select id="product-type" onchange="calculatePool(false)">
+        <option value="powder">คลอรีนผง 90% (Pool Clear)</option>
+        <option value="granule">คลอรีนเกล็ด 90% (Pool Clear Granules)</option>
+        <option value="tablet">คลอรีนเม็ดฟู่ 15g (Pool Clear Tablets)</option>
+        <option value="ph_plus">ผลิตภัณฑ์ปรับค่า pH+ (พีเอชพลัส)</option>
+        <option value="ph_minus">ผลิตภัณฑ์ปรับค่า pH- (พีเอชดาวน์)</option>
+        <option value="algae">น้ำยากำจัดตะไคร่น้ำ (Algae Clear)</option>
+        <option value="crystal">น้ำยาปรับใส (Crystal Clear)</option>
+      </select>
+    </div>
+
     <div class="input-group">
       <label>ความกว้าง (เมตร)</label>
-      <input type="number" id="pool-w" placeholder="0.00">
+      <input type="number" id="pool-w" placeholder="0.00" oninput="calculatePool(false)">
     </div>
     <div class="input-group">
       <label>ความยาว (เมตร)</label>
-      <input type="number" id="pool-l" placeholder="0.00">
+      <input type="number" id="pool-l" placeholder="0.00" oninput="calculatePool(false)">
     </div>
     <div class="input-group">
       <label>ความลึกเฉลี่ย (เมตร)</label>
-      <input type="number" id="pool-d" placeholder="0.00">
+      <input type="number" id="pool-d" placeholder="0.00" oninput="calculatePool(false)">
     </div>
-    <button class="calc-btn" onclick="calculatePool()">คำนวณปริมาณที่ต้องใช้</button>
+    
+    <button class="calc-btn" onclick="calculatePool(true)">คำนวณปริมาณที่ต้องใช้</button>
   </div>
 
   <div class="calc-right">
@@ -130,33 +148,97 @@
     </div>
 
     <div class="result-box" style="border-color: #bee3f8; background: #ebf8ff;">
-      <div class="result-label" style="color: #2b6cb0;">ปริมาณคลอรีนที่ต้องใช้</div>
-      <div class="result-value result-highlight" id="res-chlorine">- กรัม</div>
-      <div style="font-size: 14px; color: #2b6cb0; margin-top: 2px; font-weight: 500;" id="res-spoon">(- ช้อนชา)</div>
+      <div class="result-label" style="color: #2b6cb0;" id="product-label">ปริมาณที่ต้องใช้</div>
+      <div class="result-value result-highlight" id="res-main">-</div>
+      <div style="font-size: 14px; color: #2b6cb0; margin-top: 2px; font-weight: 500;" id="res-sub">(-)</div>
     </div>
     
-    <div class="note">*อัตราส่วนอ้างอิง: คลอรีน 5 กรัม (1 ช้อนชา) ต่อ น้ำ 1 คิว</div>
+    <div class="note" id="res-note">*กรุณากรอกข้อมูลและกดคำนวณ</div>
   </div>
 </div>
 
 <script>
-  function calculatePool() {
+  // เพิ่มพารามิเตอร์ showError เข้ามา เพื่อแยกว่าให้เตือน (เวลาคนตั้งใจกดปุ่ม) หรือเงียบไว้ (เวลาแค่สลับสินค้า)
+  function calculatePool(showError = true) {
     const w = parseFloat(document.getElementById('pool-w').value);
     const l = parseFloat(document.getElementById('pool-l').value);
     const d = parseFloat(document.getElementById('pool-d').value);
+    const product = document.getElementById('product-type').value;
     
+    // คำนวณเมื่อมีตัวเลขครบเท่านั้น
     if(w > 0 && l > 0 && d > 0) {
       const volume = w * l * d;
-      const liters = volume * 1000;     
-      const chlorineGrams = volume * 5; 
-      const chlorineSpoons = volume;    
+      const liters = volume * 1000;
       
       document.getElementById('res-volume').innerText = volume.toLocaleString(undefined, {maximumFractionDigits: 2}) + " คิว";
       document.getElementById('res-liters').innerText = "(" + liters.toLocaleString(undefined, {maximumFractionDigits: 2}) + " ลิตร)";
-      document.getElementById('res-chlorine').innerText = chlorineGrams.toLocaleString(undefined, {maximumFractionDigits: 2}) + " กรัม";
-      document.getElementById('res-spoon').innerText = "(หรือประมาณ " + chlorineSpoons.toLocaleString(undefined, {maximumFractionDigits: 2}) + " ช้อนชา)";
+      
+      let labelText = "";
+      let mainText = "";
+      let subText = "";
+      let noteText = "";
+
+      switch(product) {
+        case 'powder':
+          labelText = "ปริมาณคลอรีนผงที่ต้องใช้";
+          mainText = (volume * 5).toLocaleString(undefined, {maximumFractionDigits: 2}) + " กรัม";
+          subText = "(หรือประมาณ " + volume.toLocaleString(undefined, {maximumFractionDigits: 2}) + " ช้อนชา)";
+          noteText = "*อัตราส่วนอ้างอิง: คลอรีนผง 5 กรัม (1 ช้อนชา) ต่อ น้ำ 1 คิว";
+          break;
+
+        case 'granule':
+          labelText = "ปริมาณคลอรีนเกล็ดที่ต้องใช้";
+          mainText = (volume * 5).toLocaleString(undefined, {maximumFractionDigits: 2}) + " กรัม";
+          subText = "(หรือประมาณ " + volume.toLocaleString(undefined, {maximumFractionDigits: 2}) + " ช้อนชา)";
+          noteText = "*อัตราส่วนอ้างอิง: คลอรีนเกล็ด 5 กรัม (1 ช้อนชา) ต่อ น้ำ 1 คิว";
+          break;
+          
+        case 'tablet':
+          labelText = "จำนวนคลอรีนเม็ดฟู่ที่ต้องใช้";
+          mainText = (volume / 2).toLocaleString(undefined, {maximumFractionDigits: 2}) + " เม็ด";
+          subText = "(น้ำหนักรวม " + (volume * 7.5).toLocaleString(undefined, {maximumFractionDigits: 2}) + " กรัม)";
+          noteText = "*อัตราส่วนอ้างอิง: 1 เม็ด (15 กรัม) ต่อ น้ำ 2 คิว";
+          break;
+          
+        case 'ph_plus':
+          labelText = "ปริมาณ pH+ (พีเอชพลัส) ที่ต้องใช้";
+          mainText = (volume * 10).toLocaleString(undefined, {maximumFractionDigits: 2}) + " กรัม";
+          subText = "(หรือประมาณ " + (volume * 2).toLocaleString(undefined, {maximumFractionDigits: 2}) + " ช้อนชา)";
+          noteText = "*อัตราส่วนอ้างอิง: 10 กรัม (2 ช้อนชา) ต่อ น้ำ 1 คิว (ช่วยเพิ่มค่า pH ประมาณ 0.1)";
+          break;
+          
+        case 'ph_minus':
+          labelText = "ปริมาณ pH- (พีเอชดาวน์) ที่ต้องใช้";
+          mainText = (volume * 10).toLocaleString(undefined, {maximumFractionDigits: 2}) + " กรัม";
+          subText = "(หรือประมาณ " + (volume * 2).toLocaleString(undefined, {maximumFractionDigits: 2}) + " ช้อนชา)";
+          noteText = "*อัตราส่วนอ้างอิง: 10 กรัม (2 ช้อนชา) ต่อ น้ำ 1 คิว (ช่วยลดค่า pH ประมาณ 0.1)";
+          break;
+          
+        case 'algae':
+          labelText = "ปริมาณน้ำยากำจัดตะไคร่น้ำที่ต้องใช้";
+          mainText = (volume * 1.5).toLocaleString(undefined, {maximumFractionDigits: 2}) + " ml";
+          subText = "(หรือประมาณ " + (volume / 10).toLocaleString(undefined, {maximumFractionDigits: 2}) + " ฝา)";
+          noteText = "*อัตราส่วนอ้างอิง: 1 ฝา (15 ml) ต่อ น้ำ 10 คิว";
+          break;
+          
+        case 'crystal':
+          labelText = "ปริมาณน้ำยาปรับใสที่ต้องใช้";
+          mainText = (volume * 1.5).toLocaleString(undefined, {maximumFractionDigits: 2}) + " ml";
+          subText = "(หรือประมาณ " + (volume / 10).toLocaleString(undefined, {maximumFractionDigits: 2}) + " ฝา)";
+          noteText = "*อัตราส่วนอ้างอิง: 1 ฝา (15 ml) ต่อ น้ำ 10 คิว";
+          break;
+      }
+
+      document.getElementById('product-label').innerText = labelText;
+      document.getElementById('res-main').innerText = mainText;
+      document.getElementById('res-sub').innerText = subText;
+      document.getElementById('res-note').innerText = noteText;
+      
     } else {
-      alert("กรุณากรอกตัวเลขความกว้าง ความยาว และความลึกให้ถูกต้องครับ");
+      // โชว์แจ้งเตือนเฉพาะเวลาตั้งใจกดปุ่มเท่านั้น ป้องกันความรำคาญเวลาแค่สลับสินค้า
+      if (showError) {
+        alert("กรุณากรอกตัวเลขความกว้าง ความยาว และความลึกให้ถูกต้องครับ");
+      }
     }
   }
 </script>
