@@ -1,6 +1,12 @@
 <style>
   @import url('https://fonts.googleapis.com/css2?family=Prompt:wght@400;500;600;700&display=swap');
 
+  /* ลบระยะขอบเริ่มต้นของ Browser เพื่อป้องกัน Scrollbar */
+  body {
+    margin: 0;
+    padding: 0;
+  }
+
   /* กรอบหลัก */
   .pool-calc-wrapper {
     font-family: 'Prompt', sans-serif;
@@ -10,6 +16,7 @@
     border-radius: 12px;
     border: 1px solid #e2e8f0;
     box-sizing: border-box; 
+    overflow: hidden; /* สั่งซ่อนส่วนที่ล้นออกไป */
     
     display: flex;
     flex-direction: row; 
@@ -20,7 +27,7 @@
   .calc-left {
     flex: 1; 
     width: 50%;
-    padding: 25px;
+    padding: 20px; /* ลดช่องไฟลงนิดหน่อยให้กระชับ */
     background-color: #ffffff;
     box-sizing: border-box;
     border-radius: 12px 0 0 12px;
@@ -31,7 +38,7 @@
     flex: 1; 
     width: 50%;
     background: #f8fafc;
-    padding: 25px;
+    padding: 20px; /* ลดช่องไฟลงนิดหน่อยให้กระชับ */
     border-left: 1px solid #e2e8f0;
     display: flex;
     flex-direction: column;
@@ -46,13 +53,13 @@
     font-size: 18px;
     font-weight: 600;
     margin-top: 0;
-    margin-bottom: 20px;
+    margin-bottom: 15px; /* ลดระยะห่าง */
     text-align: center;
   }
 
-  .input-group { margin-bottom: 12px; }
+  .input-group { margin-bottom: 10px; } /* ลดระยะห่างระหว่างช่อง */
   .input-group label {
-    display: block; font-size: 14px; font-weight: 500; color: #4a5568; margin-bottom: 5px;
+    display: block; font-size: 14px; font-weight: 500; color: #4a5568; margin-bottom: 4px;
   }
   
   .input-group input, .input-group select {
@@ -67,7 +74,7 @@
   .calc-btn {
     width: 100%; padding: 12px; background: #1a3c6d; color: #fff; font-size: 15px; 
     font-weight: 600; border: none; border-radius: 8px; cursor: pointer; 
-    transition: background 0.3s; margin-top: 10px;
+    transition: background 0.3s; margin-top: 8px;
     font-family: 'Prompt', sans-serif;
   }
   .calc-btn:hover { background: #122b4d; }
@@ -75,7 +82,7 @@
   /* กล่องแสดงผลลัพธ์ */
   .result-box {
     background: #fff; border: 1px solid #e2e8f0; border-radius: 10px; 
-    padding: 15px; text-align: center; margin-bottom: 12px; 
+    padding: 12px; text-align: center; margin-bottom: 12px; 
   }
   .result-label { font-size: 13px; color: #718096; margin-bottom: 5px; font-weight: 500; }
   .result-value { font-size: 20px; font-weight: 700; color: #1a3c6d; }
@@ -92,8 +99,9 @@
 
   /* ปรับแต่งสำหรับหน้าจอมือถือ */
   @media (max-width: 600px) {
+    body { overflow: auto; } /* บนมือถือปล่อยให้เลื่อนได้ปกติถ้าจอมันเล็กมาก */
     .calc-left, .calc-right { padding: 12px; }
-    .calc-title { font-size: 14px; margin-bottom: 12px; }
+    .calc-title { font-size: 14px; margin-bottom: 10px; }
     .input-group label { font-size: 12px; }
     .input-group input, .input-group select { padding: 8px; font-size: 13px; }
     .calc-btn { font-size: 13px; padding: 10px; }
@@ -158,14 +166,12 @@
 </div>
 
 <script>
-  // เพิ่มพารามิเตอร์ showError เข้ามา เพื่อแยกว่าให้เตือน (เวลาคนตั้งใจกดปุ่ม) หรือเงียบไว้ (เวลาแค่สลับสินค้า)
   function calculatePool(showError = true) {
     const w = parseFloat(document.getElementById('pool-w').value);
     const l = parseFloat(document.getElementById('pool-l').value);
     const d = parseFloat(document.getElementById('pool-d').value);
     const product = document.getElementById('product-type').value;
     
-    // คำนวณเมื่อมีตัวเลขครบเท่านั้น
     if(w > 0 && l > 0 && d > 0) {
       const volume = w * l * d;
       const liters = volume * 1000;
@@ -235,7 +241,6 @@
       document.getElementById('res-note').innerText = noteText;
       
     } else {
-      // โชว์แจ้งเตือนเฉพาะเวลาตั้งใจกดปุ่มเท่านั้น ป้องกันความรำคาญเวลาแค่สลับสินค้า
       if (showError) {
         alert("กรุณากรอกตัวเลขความกว้าง ความยาว และความลึกให้ถูกต้องครับ");
       }
