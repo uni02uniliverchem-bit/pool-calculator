@@ -5,14 +5,12 @@
     --navy: #1d3b6d;
     --navy-dark: #152f59;
     --orange: #f27a45;
+    --blue: #367fca;
     --line: #dfe5eb;
+    --soft-blue: #edf8ff;
   }
 
-  body {
-    margin: 0;
-    padding: 0;
-    background: var(--navy);
-  }
+  body { margin: 0; padding: 0; background: var(--navy); }
 
   .pool-calc-wrapper {
     display: flex;
@@ -25,17 +23,14 @@
     border-radius: 12px;
   }
 
-  .calc-left,
-  .calc-right {
+  .calc-left, .calc-right {
     width: 50%;
     min-width: 0;
     box-sizing: border-box;
-    padding: 40px;
+    padding: 26px 32px;
   }
 
-  .calc-left {
-    background: var(--navy);
-  }
+  .calc-left { background: var(--navy); }
 
   .calc-right {
     display: flex;
@@ -46,36 +41,34 @@
   }
 
   .calc-title {
-    margin: -40px -40px 28px;
-    padding: 18px 24px;
+    margin: -26px -32px 20px;
+    padding: 14px 24px;
     color: #fff;
-    font-size: 26px;
+    font-size: 23px;
     font-weight: 700;
     text-align: center;
     background: var(--navy-dark);
   }
 
-  .input-group {
-    margin-bottom: 22px;
-  }
+  .input-group { margin-bottom: 14px; }
 
   .input-group label {
     display: block;
-    margin-bottom: 9px;
+    margin-bottom: 6px;
     color: #fff;
-    font-size: 18px;
+    font-size: 16px;
     font-weight: 600;
   }
 
   .input-group input,
   .input-group select {
     width: 100%;
-    height: 76px;
+    height: 58px;
     box-sizing: border-box;
     padding: 12px 26px;
     color: #2e3440;
     font-family: 'Prompt', sans-serif;
-    font-size: 20px;
+    font-size: 18px;
     background: #fff;
     border: 2px solid var(--line);
     border-radius: 12px;
@@ -89,11 +82,11 @@
 
   .calc-btn {
     width: 100%;
-    margin-top: 10px;
-    padding: 17px 20px;
+    margin-top: 4px;
+    padding: 13px 20px;
     color: #fff;
     font-family: 'Prompt', sans-serif;
-    font-size: 20px;
+    font-size: 18px;
     font-weight: 700;
     cursor: pointer;
     background: var(--orange);
@@ -102,42 +95,40 @@
     transition: background .2s ease;
   }
 
-  .calc-btn:hover {
-    background: #df6635;
-  }
+  .calc-btn:hover { background: #df6635; }
 
   .result-box {
     box-sizing: border-box;
-    margin-bottom: 22px;
-    padding: 25px 20px;
+    margin-bottom: 14px;
+    padding: 18px 20px;
     text-align: center;
-    background: rgba(255, 255, 255, .08);
-    border: 1px solid rgba(255, 255, 255, .28);
+    background: #f7a97d;
+    border: 1px solid #ffc5a4;
     border-radius: 16px;
   }
 
   .result-label {
     margin-bottom: 8px;
     color: #fff;
-    font-size: 18px;
+    font-size: 16px;
     font-weight: 600;
   }
 
   .result-value {
     color: #fff;
-    font-size: 32px;
+    font-size: 29px;
     font-weight: 700;
   }
 
   .result-highlight {
     color: #fff;
-    font-size: 38px;
+    font-size: 32px;
   }
 
   .result-box.recommendation {
     margin-bottom: 0;
-    background: rgba(54, 127, 202, .35);
-    border: 1px solid rgba(152, 212, 248, .7);
+    background: #df6635;
+    border: 1px solid #f58b5f;
   }
 
   .recommendation .result-label,
@@ -146,18 +137,16 @@
   }
 
   .note {
-    margin: 20px 0 0;
+    margin: 14px 0 0;
     color: #fff;
-    font-size: 15px;
+    font-size: 13px;
     font-weight: 500;
     line-height: 1.5;
     text-align: center;
   }
 
   @media (max-width: 700px) {
-    .pool-calc-wrapper {
-      display: block;
-    }
+    .pool-calc-wrapper { display: block; }
 
     .calc-left,
     .calc-right {
@@ -176,13 +165,8 @@
       font-size: 22px;
     }
 
-    .input-group {
-      margin-bottom: 16px;
-    }
-
-    .input-group label {
-      font-size: 16px;
-    }
+    .input-group { margin-bottom: 16px; }
+    .input-group label { font-size: 16px; }
 
     .input-group input,
     .input-group select {
@@ -190,9 +174,7 @@
       font-size: 17px;
     }
 
-    .calc-btn {
-      font-size: 18px;
-    }
+    .calc-btn { font-size: 18px; }
   }
 </style>
 
@@ -304,13 +286,13 @@
         'ปริมาณ pH+ (พีเอชพลัส) ที่ต้องใช้',
         `${format(volume * 10)} กรัม`,
         `(หรือประมาณ ${format(volume * 2)} ช้อนชา)`,
-        '*อัตราส่วนอ้างอิง: 10 กรัม (2 ช้อนชา) ต่อ น้ำ 1 คิว (ช่วยเพิ่มค่า pH ประมาณ 0.1)'
+        '*อัตราส่วนอ้างอิง: 10 กรัม (2 ช้อนชา) ต่อ น้ำ 1 คิว'
       ],
       ph_minus: [
         'ปริมาณ pH- (พีเอชดาวน์) ที่ต้องใช้',
         `${format(volume * 10)} กรัม`,
         `(หรือประมาณ ${format(volume * 2)} ช้อนชา)`,
-        '*อัตราส่วนอ้างอิง: 10 กรัม (2 ช้อนชา) ต่อ น้ำ 1 คิว (ช่วยลดค่า pH ประมาณ 0.1)'
+        '*อัตราส่วนอ้างอิง: 10 กรัม (2 ช้อนชา) ต่อ น้ำ 1 คิว'
       ],
       algae: [
         'ปริมาณน้ำยากำจัดตะไคร่น้ำที่ต้องใช้',
@@ -335,13 +317,4 @@
     document.getElementById('res-sub').innerText = sub;
     document.getElementById('res-note').innerText = note;
   }
-
-  document.querySelectorAll('input[type="number"]').forEach((input) => {
-    input.addEventListener('wheel', (event) => {
-      if (document.activeElement === input) {
-        event.preventDefault();
-        input.blur();
-      }
-    }, { passive: false });
-  });
 </script>
