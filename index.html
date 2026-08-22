@@ -420,4 +420,21 @@
     document.getElementById('res-sub').innerText = sub;
     document.getElementById('res-note').innerText = note;
   }
+  (() => {
+  const sendHeight = () => {
+    const height = Math.max(
+      document.body.scrollHeight,
+      document.documentElement.scrollHeight
+    );
+
+    window.parent.postMessage(
+      { type: 'pool-calculator-resize', height },
+      '*'
+    );
+  };
+
+  window.addEventListener('load', () => setTimeout(sendHeight, 0));
+  window.addEventListener('resize', sendHeight);
+  new ResizeObserver(sendHeight).observe(document.body);
+})();
 </script>
