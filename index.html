@@ -5,18 +5,42 @@
     --navy: #1d3b6d;
     --navy-dark: #152f59;
     --orange: #f27a45;
+    --blue: #367fca;
     --line: #dfe5eb;
+    --soft-blue: #edf8ff;
+  }
+
+  html,
+  body {
+    min-height: 100%;
+    margin: 0;
+  }
+
+  body {
+    background: var(--navy);
+  }
+
+  .elementor-widget:has(.pool-calc-wrapper),
+  .elementor-widget-container:has(.pool-calc-wrapper),
+  .elementor-element:has(.pool-calc-wrapper) {
+    height: fit-content !important;
+    min-height: 0 !important;
+    align-self: flex-start !important;
+    margin-bottom: 0 !important;
+    padding-bottom: 0 !important;
   }
 
   .pool-calc-wrapper {
     display: flex;
     width: 100%;
+    min-height: 100vh;
+    min-height: 100dvh;
     overflow: hidden;
     box-sizing: border-box;
     font-family: 'Prompt', sans-serif;
     background: var(--navy);
-    border: 1px solid rgba(255, 255, 255, .28);
-    border-radius: 12px;
+    border: 0;
+    border-radius: 0;
   }
 
   .calc-left,
